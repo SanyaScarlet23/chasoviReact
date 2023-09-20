@@ -30,6 +30,16 @@ export const SimpleForm = () => {
     // }
    };
 
+   useEffect(()=>{
+    console.log(formValues);
+   }, [formValues]);
+
+   let handleSubmit = (event) => {
+    event.preventDefault(); // prevent the form from default submitting
+    // basicaly saying dont submit the form, I know what I am doing
+    setIsSubmit(true);
+   };
+
     return (
         <div>
             <form>
