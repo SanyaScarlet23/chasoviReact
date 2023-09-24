@@ -1,3 +1,14 @@
+//Da se kreira aplikacijata od slikata,
+//da imame firstName, lastName, email , password
+//i godini i tie da se cuvaat vo state. Tie vrednosti
+//od stejtot da se pokazuvaat vo tabela 
+//no da ima moznost preku kopce da se krijat i
+//pokazuvaat. 
+
+//BONUS: Pazete na tekstot na kopceto, dokolku 
+//treba da se pokazat tekstot da bide Show Results
+//dokolku treba da se skrijat da bide Hide Results
+
 import { useState, useEffect } from "react";
 
 export const NewForm = () => {
@@ -38,6 +49,7 @@ export const NewForm = () => {
                         onChange={handleChange}
                         />
                     </div>
+                    <br />
                     <div>
                         {/* <label>Surname</label> */}
                         <input 
@@ -47,6 +59,7 @@ export const NewForm = () => {
                         onChange={handleChange}
                         />
                     </div>
+                    <br />
                     <div>
                         {/* <label>Email</label> */} 
                        <input 
@@ -56,6 +69,7 @@ export const NewForm = () => {
                        onChange={handleChange}
                        />
                     </div> 
+                    <br />
                     <div>
                         {/* <label>Enter your password */}
                         <input
@@ -66,6 +80,7 @@ export const NewForm = () => {
                         onChange={handleChange}
                         />
                     </div>  
+                    <br />
                     <div>
                         {/* <label>Age</label> */}
                         <input name="age"
@@ -75,6 +90,7 @@ export const NewForm = () => {
                         />
                     </div>
                 </div>
+                <br />
                <button 
                onClick={handleSubmit}>Show Results</button>
             </form>
