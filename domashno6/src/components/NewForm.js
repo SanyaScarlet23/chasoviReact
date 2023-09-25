@@ -73,7 +73,7 @@ export const NewForm = () => {
                     <div>
                         {/* <label>Enter your password */}
                         <input
-                        type={formValues.password ? "text" : "password"}
+                        type="password"
                         name="password"
                         placeholder="Enter your password"
                         value={formValues.password}

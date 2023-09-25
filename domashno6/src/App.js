@@ -56,12 +56,12 @@ function markCarsForBuy(carSs){
       /><button onClick={addCar}>Add New Brand</button>
       <hr />
       <Car listOfCars={cars} markCarsForBuy={markCarsForBuy} />
-      
+      <hr />
       <h1>Owned cars</h1>
       {/*<Car listOfCars={CarS} markCarsForSold={markCarsForSold} />*/}
-      
-     {/* <NewForm /> */}
-     {/*<Car /> */}
+      <hr />
+     <NewForm /> 
+     {/* <Car /> */}
     </div>
   );
 }
