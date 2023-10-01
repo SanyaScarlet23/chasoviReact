@@ -1,121 +1,99 @@
-//Da se kreira aplikacijata od slikata,
-//da imame firstName, lastName, email , password
-//i godini i tie da se cuvaat vo state. Tie vrednosti
-//od stejtot da se pokazuvaat vo tabela 
-//no da ima moznost preku kopce da se krijat i
-//pokazuvaat. 
+// Neka imame forma vo koja imame ime, prezime i telefonski broj 
+// i neka na submit na taa forma, se proveruvaat slednive validacii 
 
-//BONUS: Pazete na tekstot na kopceto, dokolku 
-//treba da se pokazat tekstot da bide Show Results
-//dokolku treba da se skrijat da bide Hide Results
+// imeto mora da bide najmalku 3 karakteri no najmnogu 20
+// prezimeto mora da bide najmalku 5 karakteri no najmnogu 20
+// telefonskiot broj, zadolzitelno e da bide brojki i da ima tocno 9 brojki
 
-import { useState, useEffect } from "react";
+// dokolku nekoi od ovie validacii ne e zadovoleno da se prikaze soodveten error 
+// pod negovoto pole a dokolku site se zadovoleni 
+// da se napravi da ja snema formata i da se prikaze nekoj tekst vo h1 formata bese ispratena.
+import {useState, useEffect} from "react";
 
-export const NewForm = () => {
-    const initialValues = { firstname:"", surname:"", email:"", password:"", age:"" };
-    const [ formValues, setFormValues ] = useState(initialValues);
-    const [ isSubmit, setSubmit ] = useState(false);
+export const NewForm =()=>{
+    const initialValues={name:"", surname:"", phone:""};
+    const [formValues, setFormValues] = useState(initialValues);
 
-    //Za da ne odime na peshki koristime destrukcija na site vrednosti od objektot so negovite kluchevi
-    let handleChange = (event) =>{
-        console.log(event);
-        console.log(event.target);
+    //state to track if the form has been submitted
+    const [isSubmit, setIsSubmit] =useState(false);
+    //state to hold form validation errors
+    const [formErrors, setFormErrors] = useState({});
 
-        const { name, value } = event.target;
-        setFormValues({...formValues, [name]: value });
+    //Function to handle changes in form input fields
+    let handleChange= (event) =>{
+        const {name, value}= event.target;
+        setFormValues({...formValues, [name]: value});
     };
 
     useEffect(()=>{
-        console.log(initialValues)
-    }, [initialValues.firstname, initialValues.surname, initialValues.email, initialValues.age]);
+        console.log(formValues);
+    }, [formValues]);
 
-    let handleSubmit = (event) =>{
+    //Function to hanle form submission
+    let handleSubmit=(event)=>{
         event.preventDefault();
-        setSubmit(true);
-    }
+        setFormErrors(validate(formValues));
+        setIsSubmit(true);
+    };
 
+    //Function to validate form input values
+    const validate=(values)=>{
+        const phoneNumberRegex = /^\+?[1-9][0-9]{7,14}$/;
+        const errors = {};
 
+        //Validation for name input
+        if(!values.name){
+            errors.name="Name is required!";
+        } else if(values.name.length < 3){
+            errors.name="Name must have more then 3 characters";
+        } else if(values.name.length > 20){
+            errors.name="Name has been to long. Should be lest then 20 characters";
+        };
 
-    return (
-        <div>
-            <form>
+        //Validation for surname input
+        if(!values.surname){
+            errors.surname="Surename is required!";
+        } else if(values.surname.length < 5) {
+            errors.surname="Surname must have more then 5 char.";
+        } else if(values.surname.length > 20) {
+            errors.surname="Surname has been to long. Should be lest then 20 characters"
+        };
+
+        //Validation for phone number
+        if(!values.phone){
+            errors.phone="Phone numer is required!";
+        } else if(!phoneNumberRegex.test(values.phone)){
+            errors.phone="This is not valid number"
+        }
+
+        console.log(errors);
+        return errors;
+    };
+    return(
+        <>
+        { Object.keys(formErrors).length === 0 && isSubmit ? (<h1>Signed in successfully</h1>) : (
+            <form className='form'>
+                <h1>New Form</h1>
                 <div>
                     <div>
-                        {/* <label>First Name</label> */}
-                        <input 
-                        name="firstname"
-                        placeholder="Enter your name"
-                        value={formValues.firstname}
-                        onChange={handleChange}
-                        />
+                        <label>Name </label>
+                        <input name='name' placeholder='enter your name' value={formValues.name} onChange={handleChange}/>
+                        <p>{formErrors.name}</p>
                     </div>
-                    <br />
                     <div>
-                        {/* <label>Surname</label> */}
-                        <input 
-                        name="surname"
-                        placeholder="Enter your surname"
-                        value={formValues.surname}
-                        onChange={handleChange}
-                        />
+                        <label>Surname </label>
+                        <input name='surname' placeholder='enter your surname' value={formValues.surname} onChange={handleChange}/>
+                        <p>{formErrors.surname}</p>
                     </div>
-                    <br />
                     <div>
-                        {/* <label>Email</label> */} 
-                       <input 
-                       name="email" 
-                       placeholder="Enter your E-mail address"
-                       value={formValues.email}
-                       onChange={handleChange}
-                       />
-                    </div> 
-                    <br />
-                    <div>
-                        {/* <label>Enter your password */}
-                        <input
-                        type="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        value={formValues.password}
-                        onChange={handleChange}
-                        />
-                    </div>  
-                    <br />
-                    <div>
-                        {/* <label>Age</label> */}
-                        <input name="age"
-                        placeholder="Enter your ages"
-                        value={formValues.age}
-                        onChange={handleChange}
-                        />
+                        <label>Phone </label>
+                        <input name='phone' placeholder='enter your phone' value={formValues.phone} onChange={handleChange}/>
+                        <p>{formErrors.phone}</p>
                     </div>
+                    <button onClick={handleSubmit}>Submit</button>
                 </div>
-                <br />
-               <button 
-               onClick={handleSubmit}>Show Results</button>
-            </form>
-            {isSubmit && <div>
-                              {
-                                <table border={1}>
-                                    <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>Password</th>
-                                        <th>Age</th>
-                                    </tr>
-                                    <tr>
-                                        <td>{formValues.firstname}</td>
-                                        <td>{formValues.surname}</td>
-                                        <td>{formValues.email}</td>
-                                        <td>{formValues.password}</td>
-                                        <td>{formValues.age}</td>
-                                    </tr>
-                                </table>
-                              }
-                               </div>}
-        </div>
+            </form> )}
+        </>
 
-        );
-};
-
+    );
+}
